@@ -1,4 +1,5 @@
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { text } from 'stream/consumers';
 
 // Remember to rename these classes and interfaces!
 
@@ -7,7 +8,7 @@ interface MyPluginSettings {
 }
 
 const DEFAULT_SETTINGS: MyPluginSettings = {
-	mySetting: 'default'
+	mySetting: 'add in information'
 }
 
 export default class MyPlugin extends Plugin {
@@ -16,36 +17,36 @@ export default class MyPlugin extends Plugin {
 	async onload() {
 		await this.loadSettings();
 
-		// This creates an icon in the left ribbon.
+		// Icon in the left ribbon.
 		const ribbonIconEl = this.addRibbonIcon('dice', 'My Plugin', (evt: MouseEvent) => {
-			// Called when the user clicks the icon.
-			new Notice('This is a notice!');
+			// Pop up when clicked.
+			new Notice('You pushed the left ribbon button');
 		});
-		// Perform additional things with the ribbon
+		// Perform additional things with the ribbon ??
 		ribbonIconEl.addClass('my-plugin-ribbon-class');
 
-		// This adds a status bar item to the bottom of the app. Does not work on mobile apps.
+		// Status bar item. Does not work on mobile apps.
 		const statusBarItemEl = this.addStatusBarItem();
-		statusBarItemEl.setText('Status Bar Text');
+		statusBarItemEl.setText('Words in the Status Bar Text');
 
-		// This adds a simple command that can be triggered anywhere
+		// New command. Open SampleModal
 		this.addCommand({
-			id: 'open-sample-modal-simple',
-			name: 'Open sample modal (simple)',
+			id: 'first-command',
+			name: 'First command',
 			callback: () => {
 				new SampleModal(this.app).open();
 			}
 		});
-		// This adds an editor command that can perform some operation on the current editor instance
+		// Adds text to editor.
 		this.addCommand({
-			id: 'sample-editor-command',
-			name: 'Sample editor command',
+			id: 'editor-command',
+			name: 'Add text',
 			editorCallback: (editor: Editor, view: MarkdownView) => {
 				console.log(editor.getSelection());
-				editor.replaceSelection('Sample Editor Command');
+				editor.replaceSelection('This is fun!');
 			}
 		});
-		// This adds a complex command that can check whether the current state of the app allows execution of the command
+		// Checks before execution. Needs a markdown window active.
 		this.addCommand({
 			id: 'open-sample-modal-complex',
 			name: 'Open sample modal (complex)',
@@ -65,51 +66,53 @@ export default class MyPlugin extends Plugin {
 			}
 		});
 
-		// This adds a settings tab so the user can configure various aspects of the plugin
+		// Adds settings tab.
 		this.addSettingTab(new SampleSettingTab(this.app, this));
 
-		// If the plugin hooks up any global DOM events (on parts of the app that doesn't belong to this plugin)
-		// Using this function will automatically remove the event listener when this plugin is disabled.
+		// If the plugin hooks up any global DOM events (on parts of the app that doesn't belong to this plugin) ??
+		// Using this function will automatically remove the event listener when this plugin is disabled. ??
 		this.registerDomEvent(document, 'click', (evt: MouseEvent) => {
 			console.log('click', evt);
 		});
 
-		// When registering intervals, this function will automatically clear the interval when the plugin is disabled.
+		// When registering intervals, this function will automatically clear the interval when the plugin is disabled. ??
 		this.registerInterval(window.setInterval(() => console.log('setInterval'), 5 * 60 * 1000));
 	}
 
 	onunload() {
 
 	}
-
+	// ??
 	async loadSettings() {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
 	}
-
+	// ??
 	async saveSettings() {
 		await this.saveData(this.settings);
 	}
 }
 
+// Part of First command.
 class SampleModal extends Modal {
 	constructor(app: App) {
 		super(app);
 	}
-
+	// Opens text box.
 	onOpen() {
 		const {contentEl} = this;
-		contentEl.setText('Woah!');
+		contentEl.setText('I did it.');
 	}
-
+	// Closes text box
 	onClose() {
 		const {contentEl} = this;
 		contentEl.empty();
 	}
 }
+// Settings tab information.
 
 class SampleSettingTab extends PluginSettingTab {
 	plugin: MyPlugin;
-
+	// ??
 	constructor(app: App, plugin: MyPlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
@@ -117,21 +120,30 @@ class SampleSettingTab extends PluginSettingTab {
 
 	display(): void {
 		const {containerEl} = this;
+		// Adds information
+		containerEl.createEl('h1', {text: 'Heading 1'});
 
-		containerEl.empty();
+		containerEl.createEl('h2', {text: 'Heading 2'});
 
-		containerEl.createEl('h2', {text: 'Settings for my awesome plugin.'});
-
+		// Adds line. Then information.	
 		new Setting(containerEl)
-			.setName('Setting #1')
-			.setDesc('It\'s a secret')
+			// Adds name and description.
+			.setName('Setting Name')
+			.setDesc('A description')
+			// Adds input box.
 			.addText(text => text
-				.setPlaceholder('Enter your secret')
+				// Creates a value to save information.
 				.setValue(this.plugin.settings.mySetting)
+				// Placeholder text.
+				.setPlaceholder('Placeholder text')
+				// When text is changed trigger.
 				.onChange(async (value) => {
+					// Adds a message in the console log.
 					console.log('Secret: ' + value);
+					// Change the mySetting value.
 					this.plugin.settings.mySetting = value;
+					// ??
 					await this.plugin.saveSettings();
-				}));
+				}))
 	}
 }
