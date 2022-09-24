@@ -1,0 +1,10 @@
+{
+	"id": "sounds-plugin",
+	"name": "Sounds Plugin",
+	"version": "0.0.1",
+	"minAppVersion": "0.15.0",
+	"description": "Add sounds to your Obsidian",
+	"author": "Danny Hatcher",
+	"authorUrl": "https://www.dannyhatcher.com",
+	"isDesktopOnly": false
+}
