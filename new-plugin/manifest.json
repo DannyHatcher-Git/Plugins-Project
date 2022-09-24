@@ -1,10 +1,10 @@
 {
-	"id": "obsidian-sounds-plugin",
-	"name": "Sounds Plugin",
+	"id": "first-plugin",
+	"name": "First Plugin",
 	"version": "0.0.1",
 	"minAppVersion": "0.15.0",
-	"description": "This plugin adds sounds to Obsidian.",
+	"description": "This is a plugin that is useless.",
 	"author": "Danny Hatcher",
-	"authorUrl": "https://dannyhatcher.com",
+	"authorUrl": "https://www.dannyhatcher.com",
 	"isDesktopOnly": false
 }
