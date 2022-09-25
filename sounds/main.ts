@@ -1,5 +1,7 @@
-import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting, WorkspaceLeaf } from 'obsidian';
 import { SoundSettingTab } from 'settings';
+import { Howl } from 'howler'
+import audioMp3 from './audio.mp3'
 
 interface SoundSettings {
 	mySetting: string;
@@ -11,15 +13,10 @@ const DEFAULT_SETTINGS: SoundSettings = {
 
 export default class SoundPlugin extends Plugin {
 	settings: SoundSettings;
+	audio: Howl;
 
 	async onload() {
 		await this.loadSettings();
-
-		// Icon in the left ribbon.
-		const ribbonIconEl = this.addRibbonIcon('volume-2', 'Sounds Plugin', (evt: MouseEvent) => {
-			// Pop up when clicked.
-			new Notice('You played a sound');
-		});
 
 		// Status bar item. Does not work on mobile apps.
 		const statusBarItemEl = this.addStatusBarItem();
@@ -28,18 +25,31 @@ export default class SoundPlugin extends Plugin {
 		// Adds settings tab.
 		this.addSettingTab(new SoundSettingTab(this.app, this));
 
-		// When registering intervals, this function will automatically clear the interval when the plugin is disabled. ??
-		this.registerInterval(window.setInterval(() => console.log('setInterval'), 5 * 60 * 1000));
+		this.audio = new Howl({src:[audioMp3]})
+		
+		this.addCommand({
+			id: 'play-file',
+			name: 'Play file',
+			callback: () => {
+				let sound = new Howl({
+					src:[audioMp3],
+					html5: true 
+				})
+				sound.play()
+			}
+		})
+	
 	}
 
 	onunload() {
 
 	}
-	// ??
+
+	// Load the settings. 
 	async loadSettings() {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
 	}
-	// ??
+	// Save the settings.
 	async saveSettings() {
 		await this.saveData(this.settings);
 	}
