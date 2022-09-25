@@ -1,24 +1,22 @@
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
-import { text } from 'stream/consumers';
-
-// Remember to rename these classes and interfaces!
+import { SoundSettingTab } from 'settings';
 
 interface SoundSettings {
 	mySetting: string;
 }
 
 const DEFAULT_SETTINGS: SoundSettings = {
-	mySetting: 'add in information'
+	mySetting: ''
 }
 
-export default class MyPlugin extends Plugin {
+export default class SoundPlugin extends Plugin {
 	settings: SoundSettings;
 
 	async onload() {
 		await this.loadSettings();
 
 		// Icon in the left ribbon.
-		const ribbonIconEl = this.addRibbonIcon('volume-2', 'Sounds Plugin', (evt: MouseEvent) => {
+		const ribbonIconEl = this.addRibbonIcon('volumne-2', 'Sounds Plugin', (evt: MouseEvent) => {
 			// Pop up when clicked.
 			new Notice('You played a sound');
 		});
@@ -26,12 +24,19 @@ export default class MyPlugin extends Plugin {
 		// Status bar item. Does not work on mobile apps.
 		const statusBarItemEl = this.addStatusBarItem();
 		statusBarItemEl.setText('🔊');
-		};
-
-		};
-
+		
 		// Adds settings tab.
-		this.addSettingTab(new SampleSettingTab(this.app, this));
+		this.addSettingTab(new SoundSettingTab(this.app, this));
+
+		// If the plugin hooks up any global DOM events (on parts of the app that doesn't belong to this plugin) ??
+		// Using this function will automatically remove the event listener when this plugin is disabled. ??
+		this.registerDomEvent(document, 'click', (evt: MouseEvent) => {
+			console.log('click', evt);
+		});
+
+		// When registering intervals, this function will automatically clear the interval when the plugin is disabled. ??
+		this.registerInterval(window.setInterval(() => console.log('setInterval'), 5 * 60 * 1000));
+	}
 
 	onunload() {
 
@@ -44,26 +49,8 @@ export default class MyPlugin extends Plugin {
 	async saveSettings() {
 		await this.saveData(this.settings);
 	}
-
-// Settings tab information.
-
-class SampleSettingTab extends PluginSettingTab {
-	plugin: MyPlugin;
-	// ??
-	constructor(app: App, plugin: MyPlugin) {
-		super(app, plugin);
-		this.plugin = plugin;
-	}
-
-	display(): void {
-		const {containerEl} = this;
-		// Adds information
-		containerEl.createEl('h2', {text: 'Sound settings'});
-
-		// Adds line. Then information.	
-		new Setting(containerEl)
-			// Adds name and description.
-			.setName('First sound')
-			.setDesc('Play this sound')
-	}
 }
+
+
+
+

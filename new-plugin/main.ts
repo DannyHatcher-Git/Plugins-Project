@@ -120,9 +120,9 @@ class SampleSettingTab extends PluginSettingTab {
 
 	display(): void {
 		const {containerEl} = this;
-		// Adds information
-		containerEl.createEl('h1', {text: 'Heading 1'});
-
+		// Prevents added containers on open.
+		containerEl.empty();
+		// Adds information.
 		containerEl.createEl('h2', {text: 'Heading 2'});
 
 		// Adds line. Then information.	
