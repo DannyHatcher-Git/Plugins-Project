@@ -1,3 +1,3 @@
 # Obsidian Plugin Project
 
-The first plugin I will be making.
+This is a plugin to add sound options into Obsidian.
