@@ -16,7 +16,7 @@ export default class SoundPlugin extends Plugin {
 		await this.loadSettings();
 
 		// Icon in the left ribbon.
-		const ribbonIconEl = this.addRibbonIcon('volumne-2', 'Sounds Plugin', (evt: MouseEvent) => {
+		const ribbonIconEl = this.addRibbonIcon('volume-2', 'Sounds Plugin', (evt: MouseEvent) => {
 			// Pop up when clicked.
 			new Notice('You played a sound');
 		});

@@ -28,8 +28,6 @@ export class SoundSettingTab extends PluginSettingTab {
 				.setPlaceholder('Placeholder text')
 				// When text is changed trigger.
 				.onChange(async (value) => {
-					// Adds a message in the console log.
-					console.log('Secret: ' + value);
 					// Change the mySetting value.
 					this.plugin.settings.mySetting = value;
 					// ??

@@ -1,5 +1,5 @@
 {
-	"name": "obsidian-sample-plugin",
+	"name": "obsidian-sound-plugin",
 	"version": "0.0.1",
 	"description": "Adds sound to Obsidian (https://obsidian.md)",
 	"main": "main.js",
